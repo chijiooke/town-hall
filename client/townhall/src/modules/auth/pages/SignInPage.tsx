@@ -1,12 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Typography } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import * as yup from "yup";
+import signInImage2 from "../../../assets/unimpressed.png";
 import SignInForm from "../forms/SignInForm";
 import { SignInFormInputsType } from "../types/SignInInputs.types";
-import signInImage from "../../../assets/sign-in.png";
-import signInImage2 from "../../../assets/unimpressed.png";
-import { Link } from "react-router-dom";
 
 const signInDataSchema = yup
   .object({

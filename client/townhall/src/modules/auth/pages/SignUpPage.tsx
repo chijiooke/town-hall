@@ -9,17 +9,24 @@ import { SignUpFormInputsType } from "../types/signUpInputs.types";
 
 const signInDataSchema = yup
   .object({
+    fullName: yup.string().required(),
     emailAddress: yup
       .string()
       .email("Kindly Enter A Valid Email Address")
       .required(
         "Kindly fill this Field, We need your email to verify your account"
       ),
-    password: yup.string().required(),
-    confirmPassword: yup.string().oneOf(
-      [yup.ref("password"), null],
-      "Passwords must match"
-    ),
+    password: yup
+      .string()
+      .required()
+      .min(8)
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        "Minimum eight characters, at least one letter, one number and one special character"
+      ),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref("password"), null], "Passwords must match"),
   })
   .required();
 

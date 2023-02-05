@@ -16,10 +16,10 @@ import {
 } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { SignUpFormInputsType } from "../types/signUpInputs.types";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
+import { Eye } from "iconsax-react";
+import { EyeSlash } from "iconsax-react";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
 
 export const SignUpForm: FC<{
   handleSubmit: UseFormHandleSubmit<SignUpFormInputsType>;
@@ -131,8 +131,23 @@ export const SignUpForm: FC<{
               {...field}
               id="outlined-basic"
               label="Password"
-              type="password"
               color="primary"
+              type={showPassword ? "text" : "password"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                      color="primary"
+                    >
+                      {showPassword ? <EyeSlash /> : <Eye />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
               InputLabelProps={{
                 sx: {
                   color: "white",
@@ -140,6 +155,7 @@ export const SignUpForm: FC<{
                 },
               }}
               error={!!errors.password}
+              helperText={!!errors.password && `${errors.password?.message}`}
             />
           )}
         />
@@ -159,21 +175,23 @@ export const SignUpForm: FC<{
               {...field}
               id="outlined-basic"
               label="Confirm Password"
-              type="password"
               color="primary"
               type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                      color="primary"
+                    >
+                      {showPassword ? <EyeSlash /> : <Eye />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
               InputLabelProps={{
                 sx: {
                   color: "white",

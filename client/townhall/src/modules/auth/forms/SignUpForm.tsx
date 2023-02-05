@@ -16,6 +16,10 @@ import {
 } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { SignUpFormInputsType } from "../types/signUpInputs.types";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 
 export const SignUpForm: FC<{
   handleSubmit: UseFormHandleSubmit<SignUpFormInputsType>;

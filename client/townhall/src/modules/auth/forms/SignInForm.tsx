@@ -2,11 +2,15 @@ import {
   Box,
   Button,
   GlobalStyles,
+  IconButton,
+  InputAdornment,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
-import { FC } from "react";
+import { common } from "@mui/material/colors";
+import { Eye, EyeSlash } from "iconsax-react";
+import { FC, useState } from "react";
 import {
   Control,
   Controller,
@@ -15,6 +19,7 @@ import {
   UseFormHandleSubmit,
 } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { FormContolledInput } from "../components/FormContolledInput";
 import { SignInFormInputsType } from "../types/SignInInputs.types";
 
 const SignInForm: FC<{
@@ -23,6 +28,9 @@ const SignInForm: FC<{
   control: Control<SignInFormInputsType, any>;
   formState: FormState<SignInFormInputsType>;
 }> = ({ handleSubmit, onSubmit, control, formState: { errors } }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <GlobalStyles
@@ -59,48 +67,17 @@ const SignInForm: FC<{
             Sign In
           </Typography>
         </Box>
-        <Controller
+
+        <FormContolledInput
+          control={control}
           name="emailAddress"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              id="outlined-basic"
-              label="Email Address"
-              variant="outlined"
-              InputLabelProps={{
-                sx: { color: "white", "&.Mui-focused": { color: "primary.contrastText" } },
-              }}
-              error={!!errors.emailAddress}
-              helperText={
-                !!errors.emailAddress && `${errors.emailAddress.message}`
-              }
-            />
-          )}
+          fieldError={errors.emailAddress}
         />
-        <Controller
-          name="password"
+        <FormContolledInput
           control={control}
-          render={({ field }) => (
-            <TextField
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "white",
-                    color: "white",
-                  },
-                },
-              }}
-              {...field}
-              id="outlined-basic"
-              label="Password"
-              type="password"
-              color="primary"
-              InputLabelProps={{
-                sx: { color: "white", "&.Mui-focused": { color: "primary.contrastText" } },
-              }}
-            />
-          )}
+          name="password"
+          fieldError={errors.password}
+          isPasswordField
         />
 
         <Button

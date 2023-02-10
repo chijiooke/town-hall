@@ -20,6 +20,7 @@ import { Eye } from "iconsax-react";
 import { EyeSlash } from "iconsax-react";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
+import { FormContolledInput } from "../components/FormContolledInput";
 
 export const SignUpForm: FC<{
   handleSubmit: UseFormHandleSubmit<SignUpFormInputsType>;
@@ -30,7 +31,6 @@ export const SignUpForm: FC<{
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -72,138 +72,27 @@ export const SignUpForm: FC<{
             Sign Up
           </Typography>
         </Box>
-        <Controller
+        <FormContolledInput
+          control={control}
           name="fullName"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              id="outlined-basic"
-              label="Full Name"
-              variant="outlined"
-              InputLabelProps={{
-                sx: {
-                  color: "white",
-                  "&.Mui-focused": { color: "primary.contrastText" },
-                },
-              }}
-              error={!!errors.fullName}
-              helperText={!!errors.fullName && `${errors?.fullName?.message}`}
-            />
-          )}
+          fieldError={errors.fullName}
         />
-        <Controller
+        <FormContolledInput
+          control={control}
           name="emailAddress"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              id="outlined-basic"
-              label="Email Address"
-              variant="outlined"
-              InputLabelProps={{
-                sx: {
-                  color: "white",
-                  "&.Mui-focused": { color: "primary.contrastText" },
-                },
-              }}
-              error={!!errors.emailAddress}
-              helperText={
-                !!errors.emailAddress && `${errors.emailAddress.message}`
-              }
-            />
-          )}
+          fieldError={errors.emailAddress}
         />
-
-        <Controller
+        <FormContolledInput
+          control={control}
           name="password"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "white",
-                    color: "white",
-                  },
-                },
-              }}
-              {...field}
-              id="outlined-basic"
-              label="Password"
-              color="primary"
-              type={showPassword ? "text" : "password"}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                      color="primary"
-                    >
-                      {showPassword ? <EyeSlash /> : <Eye />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              InputLabelProps={{
-                sx: {
-                  color: "white",
-                  "&.Mui-focused": { color: "primary.contrastText" },
-                },
-              }}
-              error={!!errors.password}
-              helperText={!!errors.password && `${errors.password?.message}`}
-            />
-          )}
+          fieldError={errors.password}
+          isPasswordField
         />
-        <Controller
-          name="confirmPassword"
+        <FormContolledInput
           control={control}
-          render={({ field }) => (
-            <TextField
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "white",
-                    color: "white",
-                  },
-                },
-              }}
-              {...field}
-              id="outlined-basic"
-              label="Confirm Password"
-              color="primary"
-              type={showPassword ? "text" : "password"}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                      color="primary"
-                    >
-                      {showPassword ? <EyeSlash /> : <Eye />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              InputLabelProps={{
-                sx: {
-                  color: "white",
-                  "&.Mui-focused": { color: "primary.contrastText" },
-                },
-              }}
-              error={!!errors.confirmPassword}
-              helperText={
-                !!errors.confirmPassword && `${errors.confirmPassword?.message}`
-              }
-            />
-          )}
+          name="confirmPassword"
+          fieldError={errors.confirmPassword}
+          isPasswordField
         />
 
         <Button

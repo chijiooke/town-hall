@@ -1,22 +1,13 @@
 import {
   Box,
   Button,
-  GlobalStyles,
-  IconButton,
-  InputAdornment,
-  Paper,
-  TextField,
-  Typography,
+  GlobalStyles, Paper, Typography
 } from "@mui/material";
-import { common } from "@mui/material/colors";
-import { Eye, EyeSlash } from "iconsax-react";
 import { FC, useState } from "react";
 import {
-  Control,
-  Controller,
-  FormState,
+  Control, FormState,
   SubmitHandler,
-  UseFormHandleSubmit,
+  UseFormHandleSubmit
 } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { FormContolledInput } from "../components/FormContolledInput";

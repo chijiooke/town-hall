@@ -1,9 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Typography } from "@mui/material";
+import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import signInImage2 from "../../../assets/unimpressed.png";
+import { registerRoute } from "../../../utils/api-routes/APIRoutes";
 import { SignUpForm } from "../forms/SignUpForm";
 import { SignUpFormInputsType } from "../types/signUpInputs.types";
 
@@ -41,8 +43,20 @@ export const SignUpPage = () => {
     mode: "all",
     resolver: yupResolver<yup.AnyObjectSchema>(signInDataSchema),
   });
-  const onSubmit: SubmitHandler<SignUpFormInputsType> = (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<SignUpFormInputsType> = (data) => {
+    try {
+      const res = axios
+        .post(registerRoute, {
+          fullName: data.fullName,
+          emailAddress: data.emailAddress,
+          password: data.password,
+        })
+        .then((res) => console.log("res", res.data))
+        .catch((err) => console.log("err", err));
+    } catch (err) {
+      console.log("err", err);
+    }
+  };
 
   return (
     <Box

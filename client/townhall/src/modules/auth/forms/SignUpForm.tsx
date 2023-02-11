@@ -2,25 +2,17 @@ import {
   Box,
   Button,
   GlobalStyles,
-  Paper,
-  TextField,
-  Typography,
+  Paper, Typography
 } from "@mui/material";
 import { FC, useState } from "react";
 import {
-  Control,
-  Controller,
-  FormState,
+  Control, FormState,
   SubmitHandler,
-  UseFormHandleSubmit,
+  UseFormHandleSubmit
 } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { SignUpFormInputsType } from "../types/signUpInputs.types";
-import { Eye } from "iconsax-react";
-import { EyeSlash } from "iconsax-react";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
 import { FormContolledInput } from "../components/FormContolledInput";
+import { SignUpFormInputsType } from "../types/signUpInputs.types";
 
 export const SignUpForm: FC<{
   handleSubmit: UseFormHandleSubmit<SignUpFormInputsType>;

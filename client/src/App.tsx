@@ -25,6 +25,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<SignInPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="/town-hall" element={<SignUpPage />} />
         </Routes>
       </Router>
     </ThemeProvider>

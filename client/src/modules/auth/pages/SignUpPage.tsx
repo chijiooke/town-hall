@@ -4,7 +4,7 @@ import axios from "axios";
 import { CloseCircle } from "iconsax-react";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import signInImage2 from "../../../assets/unimpressed.png";
@@ -50,6 +50,7 @@ export const SignUpPage = () => {
     setOpen(false);
   };
 
+  const navigate = useNavigate();
   const { control, handleSubmit, formState } = useForm({
     defaultValues: {
       fullName: "",
@@ -73,6 +74,7 @@ export const SignUpPage = () => {
           console.log(res.data.status);
           toast.success("success!, welcome to the town hall 🚀");
           setisLoading(false);
+          navigate("/chat-app")
           if (res.data.status === "false") {
             setError(res?.data?.message);
             setOpen(true);

@@ -11,9 +11,8 @@ export const signUpController = async (
     const { emailAddress, fullName, password } = req.body;
     const emailExists: boolean | null = await Users.findOne({ emailAddress });
     if (emailExists) {
-      return res.json({
-        message: "Email Aready Used",
-        status: 406,
+      return res.status(400).json({
+        message: "Email aready in use",
       });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -28,9 +27,8 @@ export const signUpController = async (
       status: false,
     });
   } catch (err) {
-    return res.json({
+    return res.status(400).json({
       message: err,
-      status: false,
     });
   }
 };

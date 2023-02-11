@@ -1,33 +1,23 @@
 import {
   Box,
   Button,
-  GlobalStyles,
-  Paper, Typography
+  GlobalStyles, Paper, Typography
 } from "@mui/material";
 import { FC, useState } from "react";
-import {
-  Control, FormState,
-  SubmitHandler,
-  UseFormHandleSubmit
-} from "react-hook-form";
+
 import { Link } from "react-router-dom";
 import { FormContolledInput } from "../components/FormContolledInput";
-import { SignUpFormInputsType } from "../types/signUpInputs.types";
+import { SignInFormInputsType } from "../types/SignInInputs.types";
 
-export const SignUpForm: FC<{
-  handleSubmit: UseFormHandleSubmit<SignUpFormInputsType>;
-  onSubmit: SubmitHandler<SignUpFormInputsType>;
-  control: Control<SignUpFormInputsType, any>;
-  formState: FormState<SignUpFormInputsType>;
+const SignInForm: FC<{
+  handleSubmit: UseFormHandleSubmit<SignInFormInputsType>;
+  onSubmit: SubmitHandler<SignInFormInputsType>;
+  control: Control<SignInFormInputsType, any>;
+  formState: FormState<SignInFormInputsType>;
 }> = ({ handleSubmit, onSubmit, control, formState: { errors } }) => {
   const [showPassword, setShowPassword] = useState(false);
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <GlobalStyles
@@ -61,14 +51,10 @@ export const SignUpForm: FC<{
       >
         <Box>
           <Typography variant="h5" fontWeight={600}>
-            Sign Up
+            Sign In
           </Typography>
         </Box>
-        <FormContolledInput
-          control={control}
-          name="fullName"
-          fieldError={errors.fullName}
-        />
+
         <FormContolledInput
           control={control}
           name="emailAddress"
@@ -80,12 +66,6 @@ export const SignUpForm: FC<{
           fieldError={errors.password}
           isPasswordField
         />
-        <FormContolledInput
-          control={control}
-          name="confirmPassword"
-          fieldError={errors.confirmPassword}
-          isPasswordField
-        />
 
         <Button
           type="submit"
@@ -95,12 +75,14 @@ export const SignUpForm: FC<{
             color: "common.white",
           }}
         >
-          Sign Up
+          Sign In
         </Button>
         <Typography>
-          Already have an account? <Link to="/">Sign In</Link>{" "}
+          Don't have an account? <Link to="/sign-up">Create One</Link>{" "}
         </Typography>
       </Paper>
     </form>
   );
 };
+
+export default SignInForm;

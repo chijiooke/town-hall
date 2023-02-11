@@ -1,27 +1,29 @@
-import {
-  Box,
-  Button,
-  GlobalStyles, Paper, Typography
-} from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { Box, GlobalStyles, Paper, Typography } from "@mui/material";
 import { FC, useState } from "react";
 import {
-  Control, FormState,
+  Control,
+  FormState,
   SubmitHandler,
-  UseFormHandleSubmit
+  UseFormHandleSubmit,
 } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { FormContolledInput } from "../components/FormContolledInput";
-import { SignInFormInputsType } from "../types/SignInInputs.types";
+import { SignUpFormInputsType } from "../types/signUpInputs.types";
 
-const SignInForm: FC<{
-  handleSubmit: UseFormHandleSubmit<SignInFormInputsType>;
-  onSubmit: SubmitHandler<SignInFormInputsType>;
-  control: Control<SignInFormInputsType, any>;
-  formState: FormState<SignInFormInputsType>;
-}> = ({ handleSubmit, onSubmit, control, formState: { errors } }) => {
-  const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
+export const SignUpForm: FC<{
+  handleSubmit: UseFormHandleSubmit<SignUpFormInputsType>;
+  onSubmit: SubmitHandler<SignUpFormInputsType>;
+  control: Control<SignUpFormInputsType, any>;
+  formState: FormState<SignUpFormInputsType>;
+  isLoading: boolean;
+}> = ({
+  isLoading,
+  handleSubmit,
+  onSubmit,
+  control,
+  formState: { errors },
+}) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <GlobalStyles
@@ -55,10 +57,14 @@ const SignInForm: FC<{
       >
         <Box>
           <Typography variant="h5" fontWeight={600}>
-            Sign In
+            Sign Up
           </Typography>
         </Box>
-
+        <FormContolledInput
+          control={control}
+          name="fullName"
+          fieldError={errors.fullName}
+        />
         <FormContolledInput
           control={control}
           name="emailAddress"
@@ -70,8 +76,15 @@ const SignInForm: FC<{
           fieldError={errors.password}
           isPasswordField
         />
+        <FormContolledInput
+          control={control}
+          name="confirmPassword"
+          fieldError={errors.confirmPassword}
+          isPasswordField
+        />
 
-        <Button
+        <LoadingButton
+          loading={isLoading}
           type="submit"
           sx={{
             textTransform: "none",
@@ -79,14 +92,12 @@ const SignInForm: FC<{
             color: "common.white",
           }}
         >
-          Sign In
-        </Button>
+          Sign Up
+        </LoadingButton>
         <Typography>
-          Don't have an account? <Link to="/sign-up">Create One</Link>{" "}
+          Already have an account? <Link to="/">Sign In</Link>{" "}
         </Typography>
       </Paper>
     </form>
   );
 };
-
-export default SignInForm;

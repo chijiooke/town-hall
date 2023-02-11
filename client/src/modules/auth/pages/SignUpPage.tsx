@@ -1,8 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Typography } from "@mui/material";
+import { Box, IconButton, Snackbar, Typography } from "@mui/material";
 import axios from "axios";
+import { CloseCircle } from "iconsax-react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import * as yup from "yup";
 import signInImage2 from "../../../assets/unimpressed.png";
 import { registerRoute } from "../../../utils/api-routes/APIRoutes";
@@ -33,6 +36,20 @@ const signInDataSchema = yup
   .required();
 
 export const SignUpPage = () => {
+  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
+  const [open, setOpen] = useState(false);
+  const handleClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   const { control, handleSubmit, formState } = useForm({
     defaultValues: {
       fullName: "",
@@ -43,18 +60,32 @@ export const SignUpPage = () => {
     mode: "all",
     resolver: yupResolver<yup.AnyObjectSchema>(signInDataSchema),
   });
-  const onSubmit: SubmitHandler<SignUpFormInputsType> = (data) => {
+  const onSubmit: SubmitHandler<SignUpFormInputsType> = async (data) => {
+    setisLoading(true);
     try {
-      const res = axios
+      await axios
         .post(registerRoute, {
           fullName: data.fullName,
           emailAddress: data.emailAddress,
           password: data.password,
         })
-        .then((res) => console.log("res", res.data))
-        .catch((err) => console.log("err", err));
+        .then((res) => {
+          console.log(res.data.status);
+          toast.success("success!, welcome to the town hall 🚀");
+          setisLoading(false);
+          if (res.data.status === "false") {
+            setError(res?.data?.message);
+            setOpen(true);
+            console.log(res.data.status);
+          }
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message);
+        });
     } catch (err) {
-      console.log("err", err);
+      toast("failed");
+    } finally {
+      setisLoading(false);
     }
   };
 
@@ -69,6 +100,24 @@ export const SignUpPage = () => {
         boxSizing: "border-box",
       }}
     >
+      {/* {!!error && ( */}
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message={error}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+          >
+            <CloseCircle />
+          </IconButton>
+        }
+      />
+      {/* )} */}
       <Box
         sx={{
           height: "100%",
@@ -103,6 +152,7 @@ export const SignUpPage = () => {
           Join The <br></br>Town Hall 🚀
         </Typography>
         <SignUpForm
+          isLoading={isLoading}
           formState={formState}
           handleSubmit={handleSubmit}
           control={control}

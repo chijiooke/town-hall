@@ -20,9 +20,8 @@ const signUpController = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         const { emailAddress, fullName, password } = req.body;
         const emailExists = yield userModel_1.Users.findOne({ emailAddress });
         if (emailExists) {
-            return res.json({
-                message: "Email Aready Used",
-                status: 406,
+            return res.status(400).json({
+                message: "Email aready in use",
             });
         }
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
@@ -38,9 +37,8 @@ const signUpController = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         });
     }
     catch (err) {
-        return res.json({
+        return res.status(400).json({
             message: err,
-            status: false,
         });
     }
 });

@@ -69,6 +69,8 @@ export const SignUpPage = () => {
           fullName: data.fullName,
           emailAddress: data.emailAddress,
           password: data.password,
+          teamId: data?.teamId,
+          accessKey: data?.accessKey
         })
         .then((res) => {
           console.log(res.data.status);

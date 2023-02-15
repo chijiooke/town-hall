@@ -33,12 +33,6 @@ export const theme = createTheme({
       dark: "#CA0726",
       contrastText: "#FFFFFF",
     },
-    accent: {
-      light: "#fff",
-      main: "#fff",
-      dark: "#fff",
-      contrastText: "#FFFFFF",
-    },
     info: {
       light: "#74CAFF",
       main: "#1890FF",
@@ -88,6 +82,7 @@ export const theme = createTheme({
       secondary: "#637381",
       disabled: "#919EAB",
     },
-    divider: "#919EAB3D",
+    divider: "#ccc",
   },
+  
 });

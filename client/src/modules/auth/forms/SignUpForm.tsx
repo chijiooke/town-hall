@@ -1,5 +1,14 @@
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Box, GlobalStyles, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  Chip,
+  Collapse,
+  Divider,
+  GlobalStyles,
+  Paper,
+  Typography,
+} from "@mui/material";
+import { ArrowDown2, ArrowUp2 } from "iconsax-react";
 import { FC, useState } from "react";
 import {
   Control,
@@ -8,6 +17,7 @@ import {
   UseFormHandleSubmit,
 } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { theme } from "../../../theme";
 import { FormContolledInput } from "../components/FormContolledInput";
 import { SignUpFormInputsType } from "../types/signUpInputs.types";
 
@@ -24,6 +34,7 @@ export const SignUpForm: FC<{
   control,
   formState: { errors },
 }) => {
+  const [showTeamJoinFields, setshowTeamJoinFields] = useState(false);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <GlobalStyles
@@ -82,6 +93,37 @@ export const SignUpForm: FC<{
           fieldError={errors.confirmPassword}
           isPasswordField
         />
+
+        <Divider sx={{ borderInlineColor: "common.white" }}>
+          {" "}
+          <Chip
+            label="Joining A Team? (Optional)"
+            onClick={() => setshowTeamJoinFields((prev) => !prev)}
+            icon={
+              showTeamJoinFields ? (
+                <ArrowUp2 size={"1rem"} />
+              ) : (
+                <ArrowDown2 size={"1rem"} />
+              )
+            }
+            sx={{ color: "common.white" }}
+          />
+        </Divider>
+
+        <Collapse in={!!showTeamJoinFields}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <FormContolledInput
+              control={control}
+              name="teamId"
+              fieldError={errors.teamId}
+            />
+            <FormContolledInput
+              control={control}
+              name="accessKey"
+              fieldError={errors.accessKey}
+            />
+          </Box>
+        </Collapse>
 
         <LoadingButton
           loading={isLoading}

@@ -14,7 +14,7 @@ const teamAccessKeySchema = new Schema({
     required: true,
     min: 3,
     max: 30,
-    unique: true,
+    // unique: true,
   },
 });
 

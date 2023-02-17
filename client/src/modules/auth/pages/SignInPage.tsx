@@ -1,9 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Typography } from "@mui/material";
+import axios from "axios";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import * as yup from "yup";
 import signInImage2 from "../../../assets/unimpressed.png";
+import { signInRoute } from "../../../utils/api-routes/APIRoutes";
 import SignInForm from "../forms/SignInForm";
 import { SignInFormInputsType } from "../types/SignInInputs.types";
 
@@ -28,8 +32,28 @@ export const SignInPage = () => {
     mode: "all",
     resolver: yupResolver<yup.AnyObjectSchema>(signInDataSchema),
   });
-  const onSubmit: SubmitHandler<SignInFormInputsType> = (data) =>
-    console.log(data);
+
+  const [isLoading, setisLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<SignInFormInputsType> = async (data) => {
+    setisLoading(true);
+    try {
+      await axios
+        .post(signInRoute, { ...data })
+        .then((res) => {
+          setisLoading(false);
+          navigate("/chat-app");
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message);
+        });
+    } catch (err) {
+      toast.error("Sign In failed");
+    } finally {
+      setisLoading(false);
+    }
+  };
 
   return (
     <Box
@@ -49,7 +73,7 @@ export const SignInPage = () => {
           position: "relative",
           width: "60%",
           maxHeight: "100vh",
-          borderRadius:'0 20rem 0 0',
+          borderRadius: "0 20rem 0 0",
           background:
             " linear-gradient(356deg, rgba(173,107,255,0.4589636538209033) 0%, rgba(252,70,107,0.8) 80%)",
         }}
@@ -82,7 +106,7 @@ export const SignInPage = () => {
           onSubmit={onSubmit}
         />
         <Typography variant="caption">
-        © A Town Hall 2022 · <Link to="#"> Privacy Policy</Link> ·{" "}
+          © A Town Hall 2022 · <Link to="#"> Privacy Policy</Link> ·{" "}
           <Link to="#"> Terms & Conditions</Link>
         </Typography>
       </Box>

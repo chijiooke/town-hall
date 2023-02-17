@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import signInImage2 from "../../../assets/unimpressed.png";
-import { registerRoute } from "../../../utils/api-routes/APIRoutes";
+import { signUpRoute } from "../../../utils/api-routes/APIRoutes";
 import { SignUpForm } from "../forms/SignUpForm";
 import { SignUpFormInputsType } from "../types/signUpInputs.types";
 
@@ -65,22 +65,14 @@ export const SignUpPage = () => {
     setisLoading(true);
     try {
       await axios
-        .post(registerRoute, {
-          fullName: data.fullName,
-          emailAddress: data.emailAddress,
-          password: data.password,
-          teamId: data?.teamId,
-          accessKey: data?.accessKey
-        })
+        .post(signUpRoute, { ...data })
         .then((res) => {
-          console.log(res.data.status);
           toast.success("success!, welcome to the town hall 🚀");
           setisLoading(false);
-          navigate("/chat-app")
+          navigate("/chat-app");
           if (res.data.status === "false") {
             setError(res?.data?.message);
             setOpen(true);
-            console.log(res.data.status);
           }
         })
         .catch((err) => {
@@ -104,24 +96,7 @@ export const SignUpPage = () => {
         boxSizing: "border-box",
       }}
     >
-      {/* {!!error && ( */}
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message={error}
-        action={
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={handleClose}
-          >
-            <CloseCircle />
-          </IconButton>
-        }
-      />
-      {/* )} */}
+
       <Box
         sx={{
           height: "100%",

@@ -14,14 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signUpController = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const teamAccessKeys_1 = require("../models/teamAccessKeys");
+const teamAccessKeysModel_1 = require("../models/teamAccessKeysModel");
 const userModel_1 = require("../models/userModel");
 const signUpController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { emailAddress, fullName, password, teamId, accessKey } = req.body;
+        const { emailAddress, fullName, password, teamId, accessKey, } = req.body;
         const emailExists = yield userModel_1.Users.findOne({ emailAddress });
-        const accessKeysFromTeam = yield teamAccessKeys_1.TeamAccessKeys.find({
-            teamId: teamId,
+        const teamAccessKey = yield teamAccessKeysModel_1.TeamAccessKeys.findOne({
+            teamId,
+            accessKey,
         });
         if (emailExists) {
             return res.status(400).json({
@@ -29,6 +30,10 @@ const signUpController = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             });
         }
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        if (teamAccessKey) {
+            const team = yield teamAccessKeysModel_1.TeamAccessKeys.findOne({ Id: teamId });
+            return team;
+        }
         const user = yield userModel_1.Users.create({
             emailAddress,
             fullName,

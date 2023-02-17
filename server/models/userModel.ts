@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { UserDataType } from "../types/UserDataType";
+import { UserModelDataType } from "../types/UserDataType";
 
 const userSchema = new Schema({
   emailAddress: {
@@ -31,6 +31,12 @@ const userSchema = new Schema({
     type: String,
     default: "",
   },
+  teams: [
+    {
+      title: { type: String, max: 30 },
+      Id: { type: String },
+    },
+  ],
 });
 
-export const Users = model<UserDataType>("Users", userSchema);
+export const Users = model<UserModelDataType>("Users", userSchema);

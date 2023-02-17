@@ -29,5 +29,11 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         default: "",
     },
+    teams: [
+        {
+            title: { type: String, max: 30 },
+            Id: { type: String },
+        },
+    ],
 });
 exports.Users = (0, mongoose_1.model)("Users", userSchema);

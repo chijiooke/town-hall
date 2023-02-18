@@ -10,3 +10,7 @@ export interface UserSignUpRequestDataType {
   teamId?: string;
   accessKey?: string;
 }
+export interface UserSignInRequestDataType {
+  emailAddress: string;
+  password: string;
+}

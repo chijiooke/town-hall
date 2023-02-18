@@ -68,41 +68,13 @@ const signUpController = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.signUpController = signUpController;
 const signInController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { emailAddress, fullName, password, teamId, accessKey, } = req.body;
-        const emailExists = yield userModel_1.Users.findOne({ emailAddress });
-        const teamAccessKey = yield teamAccessKeysModel_1.TeamAccessKeys.findOne({
-            // teamId,
-            accessKey,
-        });
-        if (emailExists) {
-            return res.status(401).json({
-                message: "Email aready in use",
+        const { emailAddress, password } = req.body;
+        const user = yield userModel_1.Users.findOne({ emailAddress, password });
+        if (!user) {
+            return res.status(400).json({
+                message: "Incorrect Credentials, kindly confirm email and password",
             });
         }
-        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
-        const teams = [];
-        // if access key was sent
-        if (!!accessKey) {
-            // if access key exists in list of available keys
-            if (teamAccessKey) {
-                const teamDataResponse = yield teamModel_1.Teams.findOne({ Id: teamId });
-                !!teamDataResponse && teams.push(teamDataResponse);
-                // delete single use access key
-                teamAccessKeysModel_1.TeamAccessKeys.deleteOne({ accessKey });
-            }
-            else {
-                return res.status(400).json({
-                    message: "Access key not found",
-                });
-            }
-        }
-        const user = yield userModel_1.Users.create({
-            emailAddress,
-            fullName,
-            password: hashedPassword,
-            teams,
-        });
-        delete user.password;
         return res.json({
             data: user,
             status: false,

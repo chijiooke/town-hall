@@ -7,16 +7,18 @@ const teamAccessKeySchema = new Schema({
     required: true,
     min: 3,
     max: 30,
-    // unique: true,
   },
 
-  key: {
+  accesskey: {
     type: String,
     required: true,
     min: 3,
     max: 30,
+    // unique: true,
   },
- 
 });
 
-export const TeamAccessKeys = model<TeamAccessKeyType>("TeamAccessKeys", teamAccessKeySchema);
+export const TeamAccessKeys = model<TeamAccessKeyType>(
+  "TeamAccessKeys",
+  teamAccessKeySchema
+);

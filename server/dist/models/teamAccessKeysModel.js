@@ -14,7 +14,7 @@ const teamAccessKeySchema = new mongoose_1.Schema({
         required: true,
         min: 3,
         max: 30,
-        unique: true,
+        // unique: true,
     },
 });
 exports.TeamAccessKeys = (0, mongoose_1.model)("TeamAccessKeys", teamAccessKeySchema);

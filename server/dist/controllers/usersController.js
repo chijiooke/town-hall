@@ -12,27 +12,46 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signUpController = void 0;
+exports.signInController = exports.signUpController = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const teamAccessKeys_1 = require("../models/teamAccessKeys");
+const teamAccessKeysModel_1 = require("../models/teamAccessKeysModel");
+const teamModel_1 = require("../models/teamModel");
 const userModel_1 = require("../models/userModel");
-const signUpController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const signUpController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { emailAddress, fullName, password, teamId, accessKey } = req.body;
+        const { emailAddress, fullName, password, teamId, accessKey, } = req.body;
         const emailExists = yield userModel_1.Users.findOne({ emailAddress });
-        const accessKeysFromTeam = yield teamAccessKeys_1.TeamAccessKeys.find({
-            teamId: teamId,
+        const teamAccessKey = yield teamAccessKeysModel_1.TeamAccessKeys.findOne({
+            // teamId,
+            accessKey,
         });
         if (emailExists) {
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "Email aready in use",
             });
         }
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        const teams = [];
+        // if access key was sent
+        if (!!accessKey) {
+            // if access key exists in list of available keys
+            if (teamAccessKey) {
+                const teamDataResponse = yield teamModel_1.Teams.findOne({ Id: teamId });
+                !!teamDataResponse && teams.push(teamDataResponse);
+                // delete single use access key
+                teamAccessKeysModel_1.TeamAccessKeys.deleteOne({ accessKey });
+            }
+            else {
+                return res.status(400).json({
+                    message: "Access key not found",
+                });
+            }
+        }
         const user = yield userModel_1.Users.create({
             emailAddress,
             fullName,
             password: hashedPassword,
+            teams,
         });
         delete user.password;
         return res.json({
@@ -47,3 +66,52 @@ const signUpController = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.signUpController = signUpController;
+const signInController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { emailAddress, fullName, password, teamId, accessKey, } = req.body;
+        const emailExists = yield userModel_1.Users.findOne({ emailAddress });
+        const teamAccessKey = yield teamAccessKeysModel_1.TeamAccessKeys.findOne({
+            // teamId,
+            accessKey,
+        });
+        if (emailExists) {
+            return res.status(401).json({
+                message: "Email aready in use",
+            });
+        }
+        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        const teams = [];
+        // if access key was sent
+        if (!!accessKey) {
+            // if access key exists in list of available keys
+            if (teamAccessKey) {
+                const teamDataResponse = yield teamModel_1.Teams.findOne({ Id: teamId });
+                !!teamDataResponse && teams.push(teamDataResponse);
+                // delete single use access key
+                teamAccessKeysModel_1.TeamAccessKeys.deleteOne({ accessKey });
+            }
+            else {
+                return res.status(400).json({
+                    message: "Access key not found",
+                });
+            }
+        }
+        const user = yield userModel_1.Users.create({
+            emailAddress,
+            fullName,
+            password: hashedPassword,
+            teams,
+        });
+        delete user.password;
+        return res.json({
+            data: user,
+            status: false,
+        });
+    }
+    catch (err) {
+        return res.status(400).json({
+            message: err,
+        });
+    }
+});
+exports.signInController = signInController;

@@ -4,9 +4,16 @@ import { ToastContainer } from "react-toastify";
 import { SignInPage } from "./modules/auth/pages/SignInPage";
 import { SignUpPage } from "./modules/auth/pages/SignUpPage";
 import { theme } from "./theme";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const App = () => {
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer

@@ -6,6 +6,7 @@ import { Users } from "../models/userModel";
 import { TeamAccessKeyType } from "../types/TeamAccessKeyTypes";
 import { TeamDataType } from "../types/TeamType";
 import {
+  UserModelDataType,
   UserSignInRequestDataType,
   UserSignUpRequestDataType,
 } from "../types/UserDataType";
@@ -71,17 +72,34 @@ export const signUpController = async (req: Request, res: Response) => {
 export const signInController = async (req: Request, res: Response) => {
   try {
     const { emailAddress, password }: UserSignInRequestDataType = req.body;
-    const user: boolean | null = await Users.findOne({ emailAddress, password });
+    const user: Partial<UserModelDataType> | null = await Users.findOne({
+      emailAddress,
+    });
 
     if (!user) {
       return res.status(400).json({
-        message: "Incorrect Credentials, kindly confirm email and password",
+        message: "User Not Found",
       });
+    } else {
+      if (user.password) {
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+          return res.status(400).json({
+            message: "Incorrect Credentials",
+          });
+        }
+        delete user.password;
+        return res.json({
+          data: {
+            emailAddress: user.emailAddress,
+            fullName: user.fullName,
+            teams: user.teams,
+            displayPisture: user.displayPicture,
+            isDisplayPictureSet: user.isDisplayPictureSet,
+          },
+        });
+      }
     }
-    return res.json({
-      data: user,
-      status: false,
-    });
   } catch (err) {
     return res.status(400).json({
       message: err,

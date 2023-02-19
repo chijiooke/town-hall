@@ -69,16 +69,34 @@ exports.signUpController = signUpController;
 const signInController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { emailAddress, password } = req.body;
-        const user = yield userModel_1.Users.findOne({ emailAddress, password });
+        const user = yield userModel_1.Users.findOne({
+            emailAddress,
+        });
         if (!user) {
             return res.status(400).json({
-                message: "Incorrect Credentials, kindly confirm email and password",
+                message: "User Not Found",
             });
         }
-        return res.json({
-            data: user,
-            status: false,
-        });
+        else {
+            if (user.password) {
+                const isPasswordValid = yield bcrypt_1.default.compare(password, user.password);
+                if (!isPasswordValid) {
+                    return res.status(400).json({
+                        message: "Incorrect Credentials",
+                    });
+                }
+                delete user.password;
+                return res.json({
+                    data: {
+                        emailAddress: user.emailAddress,
+                        fullName: user.fullName,
+                        teams: user.teams,
+                        displayPisture: user.displayPicture,
+                        isDisplayPictureSet: user.isDisplayPictureSet,
+                    },
+                });
+            }
+        }
     }
     catch (err) {
         return res.status(400).json({

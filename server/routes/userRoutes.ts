@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { signUpController } from "../controllers/usersController";
+import { signInController, signUpController } from "../controllers/usersController";
 
 export const userRoutes = require("express").Router();
 

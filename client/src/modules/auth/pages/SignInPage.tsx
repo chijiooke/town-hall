@@ -96,7 +96,15 @@ export const SignInPage = () => {
           textAlign: "center",
         }}
       >
-        <Typography fontWeight={600} variant="h2" mb={4} textAlign="left">
+        <Typography
+          data-aos="fade-up"
+          data-aos-easing="ease-in-sine"
+          data-aos-delay="100"
+          fontWeight={600}
+          variant="h2"
+          mb={4}
+          textAlign="left"
+        >
           Hello 👋🏾, <br></br>Welcome Back
         </Typography>
         <SignInForm
@@ -105,7 +113,7 @@ export const SignInPage = () => {
           control={control}
           onSubmit={onSubmit}
         />
-        <Typography variant="caption">
+        <Typography variant="caption" data-aos-delay="800" data-aos="fade-up" data-aos-easing="ease-in-sine">
           © A Town Hall 2022 · <Link to="#"> Privacy Policy</Link> ·{" "}
           <Link to="#"> Terms & Conditions</Link>
         </Typography>

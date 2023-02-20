@@ -4,6 +4,7 @@ import {
   GlobalStyles, Paper, Typography
 } from "@mui/material";
 import { FC, useState } from "react";
+import { Control, FormState, SubmitHandler, UseFormHandleSubmit } from "react-hook-form";
 
 import { Link } from "react-router-dom";
 import { FormContolledInput } from "../components/FormContolledInput";
@@ -19,7 +20,7 @@ const SignInForm: FC<{
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-delay="300" onSubmit={handleSubmit(onSubmit)}>
       <GlobalStyles
         styles={{
           "& .MuiOutlinedInput-root": {

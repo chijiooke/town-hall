@@ -8,11 +8,14 @@ export const Dashboard: FC<{ Children?: any }> = ({ Children }) => {
     <>
       <Drawer
         sx={{
+            
           width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: drawerWidth,
-            boxSizing: "border-box",
+            boxSizing: "border-box",backgroundColor:"common.black",
+            color:"common.white",borderRight:"0.5px solid #333",
+            
           },
         }}
         variant="permanent"

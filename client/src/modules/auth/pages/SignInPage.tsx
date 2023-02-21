@@ -43,7 +43,9 @@ export const SignInPage = () => {
         .post(signInRoute, { ...data })
         .then((res) => {
           setisLoading(false);
-          navigate("/chat-app");
+          navigate("/dashboard");
+          localStorage.setItem("user", JSON.stringify(res.data.data));
+          // console.log()
         })
         .catch((err) => {
           toast.error(err.response.data.message);
@@ -113,7 +115,12 @@ export const SignInPage = () => {
           control={control}
           onSubmit={onSubmit}
         />
-        <Typography variant="caption" data-aos-delay="800" data-aos="fade-up" data-aos-easing="ease-in-sine">
+        <Typography
+          variant="caption"
+          data-aos-delay="800"
+          data-aos="fade-up"
+          data-aos-easing="ease-in-sine"
+        >
           © A Town Hall 2022 · <Link to="#"> Privacy Policy</Link> ·{" "}
           <Link to="#"> Terms & Conditions</Link>
         </Typography>

@@ -5,6 +5,8 @@ import { Teams } from "../models/teamModel";
 import { Users } from "../models/userModel";
 import { TeamAccessKeyType } from "../types/TeamAccessKeyTypes";
 import { TeamDataType } from "../types/TeamType";
+import jwt from "jsonwebtoken";
+
 import {
   UserModelDataType,
   UserSignInRequestDataType,
@@ -57,6 +59,19 @@ export const signUpController = async (req: Request, res: Response) => {
       password: hashedPassword,
       teams,
     });
+    const token = jwt.sign(
+      { user_id: user._id, emailAddress },
+      process.env.JWT_SECRET_KEY as string,
+      {
+        expiresIn: "6h",
+        algorithm: "HS256",
+      }
+      // (err, encoded) => {
+      //   err ? reject(err) : resolve(encoded);
+      // }
+    );
+
+    user.token = token;
     delete user.password;
     return res.json({
       data: user,
@@ -88,7 +103,17 @@ export const signInController = async (req: Request, res: Response) => {
             message: "Incorrect Credentials",
           });
         }
-        delete user.password;
+        const token = jwt.sign(
+          { emailAddress },
+          process.env.JWT_SECRET_KEY as string,
+          {
+            expiresIn: "6h",
+            algorithm: "HS256",
+          }
+        );
+
+        user.token = token;
+
         return res.json({
           data: {
             emailAddress: user.emailAddress,
@@ -96,6 +121,7 @@ export const signInController = async (req: Request, res: Response) => {
             teams: user.teams,
             displayPisture: user.displayPicture,
             isDisplayPictureSet: user.isDisplayPictureSet,
+            token: user.token,
           },
         });
       }

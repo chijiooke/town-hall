@@ -37,6 +37,10 @@ const userSchema = new Schema({
       Id: { type: String },
     },
   ],
+  token: {
+    type: String,
+    default: "",
+  },
 });
 
 export const Users = model<UserModelDataType>("Users", userSchema);

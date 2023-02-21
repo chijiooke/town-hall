@@ -35,5 +35,9 @@ const userSchema = new mongoose_1.Schema({
             Id: { type: String },
         },
     ],
+    token: {
+        type: String,
+        default: "",
+    },
 });
 exports.Users = (0, mongoose_1.model)("Users", userSchema);

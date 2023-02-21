@@ -17,6 +17,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const teamAccessKeysModel_1 = require("../models/teamAccessKeysModel");
 const teamModel_1 = require("../models/teamModel");
 const userModel_1 = require("../models/userModel");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const signUpController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { emailAddress, fullName, password, teamId, accessKey, } = req.body;
@@ -53,6 +54,15 @@ const signUpController = (req, res) => __awaiter(void 0, void 0, void 0, functio
             password: hashedPassword,
             teams,
         });
+        const token = jsonwebtoken_1.default.sign({ user_id: user._id, emailAddress }, process.env.JWT_SECRET_KEY, {
+            expiresIn: "6h",
+            algorithm: "HS256",
+        }
+        // (err, encoded) => {
+        //   err ? reject(err) : resolve(encoded);
+        // }
+        );
+        user.token = token;
         delete user.password;
         return res.json({
             data: user,
@@ -85,7 +95,11 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                         message: "Incorrect Credentials",
                     });
                 }
-                delete user.password;
+                const token = jsonwebtoken_1.default.sign({ emailAddress }, process.env.JWT_SECRET_KEY, {
+                    expiresIn: "6h",
+                    algorithm: "HS256",
+                });
+                user.token = token;
                 return res.json({
                     data: {
                         emailAddress: user.emailAddress,
@@ -93,6 +107,7 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                         teams: user.teams,
                         displayPisture: user.displayPicture,
                         isDisplayPictureSet: user.isDisplayPictureSet,
+                        token: user.token,
                     },
                 });
             }

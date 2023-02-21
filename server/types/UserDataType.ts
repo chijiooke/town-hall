@@ -8,6 +8,7 @@ export interface UserModelDataType {
     title?: string | undefined;
     Id?: string | undefined;
   }[];
+  token:string
 }
 export interface UserSignUpRequestDataType {
   emailAddress: string;

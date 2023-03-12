@@ -1,2 +1,2 @@
 # town-hall
-a simple chat app built with typescript, ReactJs, NodeJs and Socket io
+A task management and collaboration tool where users can manage personal accounts, teams, tasks, projects and communicate (chat)

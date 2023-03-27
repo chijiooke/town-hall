@@ -69,7 +69,7 @@ export const SignUpPage = () => {
         .then((res) => {
           toast.success("success!, welcome to the town hall 🚀");
           setisLoading(false);
-          navigate("/chat-app");
+          navigate("/dashboard");
           if (res.data.status === "false") {
             setError(res?.data?.message);
             setOpen(true);
